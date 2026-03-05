@@ -1,0 +1,10 @@
+# Fly.io
+.fly/
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
