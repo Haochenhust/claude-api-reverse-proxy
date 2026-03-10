@@ -3,6 +3,10 @@
         header_up Host {http.reverse_proxy.upstream.hostport}
         header_up Accept "text/event-stream"
         flush_interval -1
+        transport http {
+            read_timeout 30m
+            write_timeout 30m
+        }
     }
 }
 
