@@ -1,12 +1,38 @@
 :8080 {
+    log {
+        output stdout
+    }
+
+    # Fly.io 健康检查接口
+    handle /health {
+        respond "OK" 200
+    }
+
     reverse_proxy https://api.anthropic.com {
-        header_up Host {http.reverse_proxy.upstream.hostport}
-        header_up Accept "text/event-stream"
+        # 支持 SSE 流式响应，禁用缓冲 (非常关键)
         flush_interval -1
+        header_up Accept 
+
+        # 伪装 Host，避免被 Anthropic/Cloudflare 拦截
+        header_up Host api.anthropic.com
+
+        # --- 抹除标准 IP 追踪头 ---
+        header_up -X-Forwarded-For
+        header_up -X-Real-IP
+        header_up -Forwarded
+
+        # --- 抹除 Fly.io 专属追踪头，实现彻底隐身 ---
+        header_up -Fly-Client-IP
+        header_up -Fly-Dispatch-Start
+        header_up -Fly-Forwarded-Port
+        header_up -Fly-Region
+
+        # 隐藏上游服务器信息
+        header_down -server
+
         transport http {
-            read_timeout 30m
-            write_timeout 30m
+            read_timeout 0
+            response_header_timeout 60s
         }
     }
 }
-
