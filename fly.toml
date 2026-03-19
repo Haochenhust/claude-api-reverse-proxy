@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for claude-api-reverse-proxy on 2025-10-21T02:32:04+08:00
+# fly.toml app configuration file generated for claude-api-reverse-proxy-6xaoka on 2026-03-19T09:45:33Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'claude-api-reverse-proxy'
+app = 'claude-api-reverse-proxy-6xaoka'
 primary_region = 'nrt'
 
 [build]
@@ -17,6 +17,7 @@ primary_region = 'nrt'
   processes = ['app']
 
 [[vm]]
-  memory = '512mb'
+  memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
